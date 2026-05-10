@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const PORT = process.env.PORT;
 const uri = process.env.MONGO_URI;
@@ -29,8 +29,18 @@ async function run() {
     app.post("/destination", async (req, res) => {
       const destinationData = req.body;
       console.log(destinationData);
-
       const result = await destinationCollection.insertOne(destinationData);
+
+      res.json(result);
+    });
+
+    app.get(`/destination/:id`, async (req, res) => {
+      const { id } = req.params;
+
+      const result = await destinationCollection.findOne({
+        _id: id,
+      });
+
       res.json(result);
     });
 
