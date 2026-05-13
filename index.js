@@ -20,6 +20,7 @@ async function run() {
     await client.connect();
     const db = client.db("Odessy");
     const destinationCollection = db.collection("destinations");
+    const bookingCollection = db.collection("bookings");
 
     app.get("/destination", async (req, res) => {
       const result = await destinationCollection.find().toArray();
@@ -62,6 +63,14 @@ async function run() {
       const result = await destinationCollection.deleteOne({
         _id: new ObjectId(id),
       });
+
+      res.json(result);
+    });
+
+    app.post("/booking", async (req, res) => {
+      const bookingData = req.body;
+      console.log(bookingData);
+      const result = await bookingCollection.insertOne(bookingData);
 
       res.json(result);
     });
