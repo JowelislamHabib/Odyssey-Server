@@ -71,7 +71,11 @@ async function run() {
       const bookingData = req.body;
       console.log(bookingData);
       const result = await bookingCollection.insertOne(bookingData);
+      res.json(result);
+    });
 
+    app.get("/bookings", async (req, res) => {
+      const result = await bookingCollection.find().toArray();
       res.json(result);
     });
 
