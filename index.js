@@ -35,15 +35,26 @@ async function run() {
       res.json(result);
     });
 
-    app.get(`/destination/:id`, async (req, res) => {
-      const { id } = req.params;
+    app.get(
+      `/destination/:id`,
+      (req, res, next) => {
+        const header = req.headers.authorization;
+        if (header === "yoyo") {
+          next();
+        } else {
+          res.status(401).json({ message: "Unauthorized" });
+        }
+      },
+      async (req, res) => {
+        const { id } = req.params;
 
-      const result = await destinationCollection.findOne({
-        _id: new ObjectId(id),
-      });
+        const result = await destinationCollection.findOne({
+          _id: new ObjectId(id),
+        });
 
-      res.json(result);
-    });
+        res.json(result);
+      },
+    );
 
     app.patch("/destination/:id", async (req, res) => {
       const { id } = req.params;
