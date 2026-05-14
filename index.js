@@ -68,7 +68,7 @@ async function run() {
       res.json(result);
     });
 
-    app.patch("/destination/:id", async (req, res) => {
+    app.patch("/destination/:id", verifyToken, async (req, res) => {
       const { id } = req.params;
       const updateData = req.body;
       // console.log(updateData);
