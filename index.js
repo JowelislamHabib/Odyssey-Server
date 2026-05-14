@@ -45,12 +45,12 @@ async function run() {
     const destinationCollection = db.collection("destinations");
     const bookingCollection = db.collection("bookings");
 
-    app.get("/destination", async (req, res) => {
+    app.get("/destination", verifyToken, async (req, res) => {
       const result = await destinationCollection.find().toArray();
       res.json(result);
     });
 
-    app.post("/destination", async (req, res) => {
+    app.post("/destination", verifyToken, async (req, res) => {
       const destinationData = req.body;
       console.log(destinationData);
       const result = await destinationCollection.insertOne(destinationData);
@@ -110,7 +110,7 @@ async function run() {
       res.json(result);
     });
 
-    app.delete("/bookings/:bookingId", async (req, res) => {
+    app.delete("/bookings/:bookingId", verifyToken, async (req, res) => {
       const { bookingId } = req.params;
 
       const result = await bookingCollection.deleteOne({
